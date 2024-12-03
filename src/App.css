@@ -50,7 +50,7 @@ body {
 
 /* Main Section */
 .main {
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   margin: 40px 0;
 }
@@ -69,15 +69,13 @@ body {
 
 .notification-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
   gap: 20px;
 }
 
 .notification-card {
   background: rgba(255, 255, 255, 0.1);
-  /* border: 2px solid #4d88ff; Blue border for cards */
-  /* border-radius: 12px; */
-  cursor: pointer;
+  border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Soft shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -96,40 +94,36 @@ body {
   font-size: 1.4rem;
   font-weight: 600;
   color: #4d88ff; /* Blue for titles */
+  margin-bottom: 10px;
 }
 
 .notification-description {
   font-size: 1rem;
   color: #fff;
-  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-.card-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+/* Price Input */
+.price-input {
+  margin-bottom: 15px;
 }
 
-.timestamp {
+.price-input label {
+  display: block;
   font-size: 0.9rem;
-  color: #bbb; /* Light grey for timestamp */
+  margin-bottom: 5px;
+  color: #bbb; /* Light grey for label */
 }
 
-.sell-button {
-  padding: 8px 16px;
-  background-color: #4d88ff; /* Soft blue button */
+.price-input-field {
+  width: 100%;
+  padding: 10px;
   border-radius: 5px;
-  border: none;
+  border: 1px solid #4d88ff; /* Blue border */
+  background: #1a1a1a; /* Input background matches card */
   color: #fff;
   font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.sell-button:hover {
-  background-color: #2e67b7; /* Darker blue on hover */
-  transform: scale(1.05);
+  box-sizing: border-box;
 }
 
 /* Toggle Switch */

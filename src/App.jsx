@@ -5,37 +5,50 @@ import { ArConnect } from "arweavekit/auth";
 import { useState } from "react";
 
 function App() {
-  const processId = ""; //backend process id
-  const [notifications, setNotifications] = useState(
-    Array.from({ length: 6 }, (_, i) => ({
-      id: i,
-      title: `Project #${i + 1}`,
-      description:
-        i % 2 === 0
-          ? "A new decentralized app is now live!"
-          : "A unique NFT marketplace has been launched.",
-      timestamp: "5 mins ago",
+  const processId = ""; // Backend process ID
+  const [notifications, setNotifications] = useState([
+    {
+      id: 0,
+      title: "New collection is added",
+      description: "Get notified when a new collection is listed.",
       isEnabled: true,
-    }))
-  );
-  const [completeData, setCompleteData] = useState(notifications);
+    },
+    {
+      id: 1,
+      title: "New asset is added",
+      description: "Get notified when a new asset is listed.",
+      isEnabled: true,
+    },
+    {
+      id: 4,
+      title: "Assets for a sell",
+      description: "Get notified when assets are put up for sale.",
+      isEnabled: true,
+    },
+    {
+      id: 2,
+      title: "Price of asset increased",
+      description: "Get notified when the price of an asset rises above your specified threshold.",
+      isEnabled: true,
+      priceThreshold: "",
+    },
+    {
+      id: 3,
+      title: "Price of asset decreased",
+      description: "Get notified when the price of an asset drops below your specified threshold.",
+      isEnabled: true,
+      priceThreshold: "",
+    },
+  ]);
+
   const RegisterUser = async () => {
     const res = await message({
       process: processId,
       tags: [{ name: "Action", value: "Register" }],
-      data: completeData,
+      data: notifications,
       signer: createDataItemSigner(window.arweaveWallet),
     });
     console.log("registered user result", res);
-    const registeredResult = await result({
-      process: processId,
-      message: res,
-    });
-    console.log("registered successfully,", registeredResult);
-
-    // if(registeredResult[0].Messages[0].Data=="Successfully Registered"){
-
-    // }
   };
 
   const toggleNotification = (id) => {
@@ -48,8 +61,14 @@ function App() {
     );
   };
 
-  const handleSellClick = (id) => {
-    alert(`Sell action for project #${id + 1}`);
+  const handlePriceChange = (id, value) => {
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.id === id
+          ? { ...notification, priceThreshold: value }
+          : notification
+      )
+    );
   };
 
   async function connectAndFetchDetails() {
@@ -77,14 +96,9 @@ function App() {
       </header>
 
       <main className="main">
-        {/* <button className="connect-button" onClick={connectAndFetchDetails}>
-          Connect & Fetch Wallet Details
-        </button> */}
-
         <section className="notifications">
           <h2 className="section-title">
-            {" "}
-            Select The Conditions On which u want to get notification instantly{" "}
+            Manage Your Notification Preferences
           </h2>
           <div className="notification-grid">
             {notifications.map((notification) => (
@@ -98,23 +112,31 @@ function App() {
                 <p className="notification-description">
                   {notification.description}
                 </p>
-                <div className="card-actions">
-                  <span className="timestamp">{notification.timestamp}</span>
-                  <button
-                    className="sell-button"
-                    onClick={() => handleSellClick(notification.id)}
-                  >
-                    Sell
-                  </button>
-                  <label className="toggle-container">
+                {notification.id === 2 || notification.id === 3 ? (
+                  <div className="price-input">
+                    <label htmlFor={`price-${notification.id}`}>
+                      Set Price Threshold:
+                    </label>
                     <input
-                      type="checkbox"
-                      checked={notification.isEnabled}
-                      onChange={() => toggleNotification(notification.id)}
+                      type="number"
+                      id={`price-${notification.id}`}
+                      className="price-input-field"
+                      value={notification.priceThreshold || ""}
+                      onChange={(e) =>
+                        handlePriceChange(notification.id, e.target.value)
+                      }
+                      placeholder="Enter price"
                     />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
+                  </div>
+                ) : null}
+                <label className="toggle-container">
+                  <input
+                    type="checkbox"
+                    checked={notification.isEnabled}
+                    onChange={() => toggleNotification(notification.id)}
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
               </div>
             ))}
           </div>
