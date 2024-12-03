@@ -28,18 +28,39 @@ function App() {
     {
       id: 2,
       title: "Price of asset increased",
-      description: "Get notified when the price of an asset rises above your specified threshold.",
+      description:
+        "Get notified when the price of an asset rises above your specified threshold.",
       isEnabled: true,
       priceThreshold: "",
     },
     {
       id: 3,
       title: "Price of asset decreased",
-      description: "Get notified when the price of an asset drops below your specified threshold.",
+      description:
+        "Get notified when the price of an asset drops below your specified threshold.",
       isEnabled: true,
       priceThreshold: "",
     },
   ]);
+
+  const collections = [
+    {
+      Name: "AI World 1.0",
+      Banner: "QPSBxp79cOMxj5gw64ixyeGD9Ne-fypiKsaYq61ersQ",
+      Id: "XcfPzHzxt2H8FC03MAC_78U1YwO9Gdk72spbq70NuNc",
+      Creator: "SaXnsUgxJLkJRghWQOUs9-wB0npVviewTkUbh2Yk64M",
+      DateCreated: "1717662766544",
+      Thumbnail: "_cX5cWW8-42Oyr3-NTkASltsdGYJJMhB6iDwui9l6g8",
+    },
+    {
+      Name: "Eleet Hacker Group",
+      Banner: "GrYR6GZ2KwqtEemAJUCymmHVJ8NBxsDWltgYtDdnjCg",
+      Id: "Z6BWhCutuKNUGFk4KfsOysGFd2pdU1LbA-rB3qnqzek",
+      Creator: "xjEKQ4Rde4B2zOC7f07xNWZ8EFFI3jMRmN2A2Dyng0s",
+      DateCreated: "1717669604031",
+      Thumbnail: "elKKvPs_Y-ml9x9p9Ilt_SErdJoQy7nhN0MTWolTsAo",
+    },
+  ];
 
   const RegisterUser = async () => {
     const res = await message({
@@ -87,6 +108,11 @@ function App() {
       console.error("Error fetching wallet details:", error);
     }
   }
+
+  const formatDate = (timestamp) => {
+    const date = new Date(parseInt(timestamp, 10));
+    return date.toLocaleString();
+  };
 
   return (
     <div className="App">
@@ -140,6 +166,54 @@ function App() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="collection-table">
+          <h2 className="section-title">Collections</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Banner</th>
+                <th>Id</th>
+                <th>Creator</th>
+                <th>Date</th>
+                <th>Thumbnail</th>
+              </tr>
+            </thead>
+            <tbody>
+              {collections.map((collection, index) => (
+                <tr key={index}>
+                  <td>{collection.Name}</td>
+                  <td>
+                    <img
+                      src={`https://arweave.net/${collection.Banner}`}
+                      alt="Banner"
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </td>
+                  <td> 
+                    <div className="compact-box"> 
+                    {collection.Id} 
+                    </div> 
+                  </td>
+                  <td> 
+                    <div className="compact-box"> 
+                    {collection.Creator} 
+                    </div> 
+                  </td>
+                  <td>{formatDate(collection.DateCreated)}</td>
+                  <td>
+                    <img
+                      src={`https://arweave.net/${collection.Thumbnail}`}
+                      alt="Thumbnail"
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
       </main>
 
